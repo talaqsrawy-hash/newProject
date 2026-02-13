@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المشتري - منصة البناء</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-building"></i>
+            <span data-text="platform_name">منصة البناء</span>
+        </div>
+        <div class="user-actions">
+            <select class="lang-selector" id="langSelect" onchange="changeLanguage(this.value)">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+            </select>
+            <div id="authButtons">
+                <button class="btn-auth" onclick="showLoginModal()"><i class="fas fa-sign-in-alt"></i> <span data-text="login">دخول</span></button>
+                <button class="btn-auth" onclick="showRegisterModal()"><i class="fas fa-user-plus"></i> <span data-text="register">تسجيل</span></button>
+            </div>
+            <div id="userInfo" class="user-info" style="display: none;">
+                <span><i class="fas fa-user-circle"></i> <span id="userName"></span></span>
+                <span id="userRole" style="font-size: 0.8rem; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 3px;"></span>
+                <button class="btn-logout" onclick="logout()" data-text="logout">تسجيل خروج</button>
+            </div>
+        </div>
+    </nav>
+    <div id="buyerDashboard" class="dashboard active">
+        <div class="dashboard-tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'buyer-browse')" data-text="browse_products">تصفح المنتجات</button>
+            <button class="tab-btn" onclick="switchTab(event, 'buyer-cart')" data-text="shopping_cart">السلة</button>
+            <button class="tab-btn" onclick="switchTab(event, 'buyer-invoices')" data-text="invoices">الفواتير</button>
+        </div>
+        <div id="buyer-browse" class="tab-content active">
+            <h3 data-text="all_products">جميع المنتجات</h3>
+            <div class="products-grid" id="allProducts"></div>
+        </div>
+        <div id="buyer-cart" class="tab-content">
+            <h3 data-text="my_cart">سلة المشتريات</h3>
+            <div id="buyerCartContent"></div>
+        </div>
+        <div id="buyer-invoices" class="tab-content">
+            <h3 data-text="invoices">الفواتير</h3>
+            <div id="buyerInvoices"></div>
+        </div>
+    </div>
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-text="login_title">دخول</h3>
+                <button class="close-btn" onclick="closeModal('loginModal')">×</button>
+            </div>
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label data-text="email">البريد الإلكتروني</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label data-text="password">كلمة المرور</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary" data-text="login">دخول</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('loginModal')" data-text="cancel">إلغاء</button>
+                </div>
+                <div class="toggle-link">
+                    <span data-text="no_account">ليس لديك حساب؟</span> <a onclick="toggleForms()" data-text="register_now">سجل الآن</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-text="register_title">تسجيل حساب جديد</h3>
+                <button class="close-btn" onclick="closeModal('registerModal')">×</button>
+            </div>
+            <form onsubmit="register(event)">
+                <div class="form-group">
+                    <label data-text="full_name">الاسم الكامل</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label data-text="email">البريد الإلكتروني</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label data-text="password">كلمة المرور</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label data-text="account_type">نوع الحساب</label>
+                    <select id="registerRole" required>
+                        <option value="buyer" data-text="buyer">مشتري</option>
+                        <option value="seller" data-text="seller">بائع</option>
+                    </select>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary" data-text="register_btn">تسجيل</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('registerModal')" data-text="cancel">إلغاء</button>
+                </div>
+                <div class="toggle-link">
+                    <span data-text="have_account">هل لديك حساب؟</span> <a onclick="toggleForms()" data-text="login_now">دخول</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="notification" id="notification"></div>
+    <script src="js/i18n.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/ui.js"></script>
+    <script>
+    // عرض الفواتير
+    function loadBuyerInvoices() {
+        const container = document.getElementById('buyerInvoices');
+        if (!store.currentUser) return;
+        const invoices = store.invoices.filter(inv => inv.buyer === store.currentUser.name);
+        if (invoices.length === 0) {
+            container.innerHTML = `<p style='color:#999;text-align:center;'>${t('no_invoices')}</p>`;
+            return;
+        }
+        container.innerHTML = invoices.map(inv => `
+            <div style='background:#fff;border-radius:8px;padding:1rem;margin-bottom:1rem;box-shadow:0 2px 8px #eee;'>
+                <div><b>${t('invoice_id')}:</b> ${inv.id}</div>
+                <div><b>${t('invoice_date')}:</b> ${new Date(inv.date).toLocaleString()}</div>
+                <div><b>${t('invoice_total')}:</b> ${inv.total.toFixed(2)} د.ك</div>
+                <div><b>${t('invoice_items')}:</b>
+                    <ul style='margin:0 0 0 1.5rem;'>
+                        ${inv.items.map(it => `<li>${it.name} × ${it.quantity} (${it.price.toFixed(2)} د.ك)</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+        `).join('');
+    }
+    // ربط التبويب
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.getAttribute('data-text') === 'invoices') loadBuyerInvoices();
+            });
+        });
+    });
+    </script>
+</body>
+</html>

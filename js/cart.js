@@ -19,6 +19,7 @@ function loadBuyerCart() {
                         <div class="product-title">${item.name}</div>
                         <div class="product-seller"><i class="fas fa-user"></i> ${item.sellerName}</div>
                         <div class="product-price">${item.price.toFixed(2)} د.ك</div>
+                        <div style="font-size:0.9rem;color:#888;">${getCategoryTranslation(item.category)}</div>
                         <div style="margin: 0.5rem 0;">
                             <button class="qty-btn" onclick="updateQty(${item.id}, -1)" style="padding: 4px 8px; background: #f0f0f0; border: none; border-radius: 3px; cursor: pointer;">-</button>
                             <span style="margin: 0 8px;">${item.quantity}</span>
@@ -67,7 +68,21 @@ function checkout() {
     }
 
     const total = store.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    alert(t('purchase_success') + '\n\n' + t('total_purchase', { total: total.toFixed(2) }));
+    const invoice = {
+        id: Date.now(),
+        date: new Date().toISOString(),
+        buyer: store.currentUser ? store.currentUser.name : '',
+        items: store.cart.map(item => ({
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            total: item.price * item.quantity,
+            seller: item.sellerName
+        })),
+        total: total
+    };
+    store.invoices.push(invoice);
+    alert(t('purchase_success') + '\n\n' + t('total_purchase', { total: total.toFixed(2) }) + '\n' + t('invoice_id') + ': ' + invoice.id);
     store.cart = [];
     store.save();
     loadBuyerCart();

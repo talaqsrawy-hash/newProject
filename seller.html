@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البائع - منصة البناء</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-building"></i>
+            <span data-text="platform_name">منصة البناء</span>
+        </div>
+        <div class="user-actions">
+            <select class="lang-selector" id="langSelect" onchange="changeLanguage(this.value)">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+            </select>
+            <div id="authButtons">
+                <button class="btn-auth" onclick="showLoginModal()"><i class="fas fa-sign-in-alt"></i> <span data-text="login">دخول</span></button>
+                <button class="btn-auth" onclick="showRegisterModal()"><i class="fas fa-user-plus"></i> <span data-text="register">تسجيل</span></button>
+            </div>
+            <div id="userInfo" class="user-info" style="display: none;">
+                <span><i class="fas fa-user-circle"></i> <span id="userName"></span></span>
+                <span id="userRole" style="font-size: 0.8rem; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 3px;"></span>
+                <button class="btn-logout" onclick="logout()" data-text="logout">تسجيل خروج</button>
+            </div>
+        </div>
+    </nav>
+    <div id="sellerDashboard" class="dashboard active">
+        <div class="dashboard-tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'seller-add')" data-text="add_product">إضافة منتج</button>
+            <button class="tab-btn" onclick="switchTab(event, 'seller-products')" data-text="my_products">منتجاتي</button>
+        </div>
+        <div id="seller-add" class="tab-content active">
+            <div class="add-product-form">
+                <h3 data-text="add_new_product">إضافة منتج جديد</h3>
+                <form onsubmit="addProduct(event)">
+                    <div class="form-group">
+                        <label data-text="product_name">اسم المنتج</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-text="product_desc">الوصف</label>
+                        <input type="text" id="productDesc" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-text="product_price">السعر (د.ك)</label>
+                        <input type="number" id="productPrice" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-text="product_image">صورة المنتج (رابط)</label>
+                        <input type="url" id="productImage" placeholder="https://example.com/image.jpg">
+                        <div style="margin-top:0.5rem; font-size:0.9rem; color:#666;">أو حمل صورة من جهازك:</div>
+                        <input type="file" id="productImageFile" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label data-text="product_category">الفئة</label>
+                        <select id="productCategory">
+                            <option value="cement" data-text="cat_cement">أسمنت</option>
+                            <option value="iron" data-text="cat_iron">حديد</option>
+                            <option value="plumbing" data-text="cat_plumbing">سباكة</option>
+                            <option value="electrical" data-text="cat_electrical">كهرباء</option>
+                            <option value="paint" data-text="cat_paint">دهانات</option>
+                            <option value="tools" data-text="cat_tools">عدد</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" data-text="add_product_btn">إضافة المنتج</button>
+                </form>
+            </div>
+        </div>
+        <div id="seller-products" class="tab-content">
+            <h3 data-text="my_products">منتجاتي</h3>
+            <div class="products-grid" id="sellerProducts"></div>
+        </div>
+    </div>
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-text="login_title">دخول</h3>
+                <button class="close-btn" onclick="closeModal('loginModal')">×</button>
+            </div>
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label data-text="email">البريد الإلكتروني</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label data-text="password">كلمة المرور</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary" data-text="login">دخول</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('loginModal')" data-text="cancel">إلغاء</button>
+                </div>
+                <div class="toggle-link">
+                    <span data-text="no_account">ليس لديك حساب؟</span> <a onclick="toggleForms()" data-text="register_now">سجل الآن</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-text="register_title">تسجيل حساب جديد</h3>
+                <button class="close-btn" onclick="closeModal('registerModal')">×</button>
+            </div>
+            <form onsubmit="register(event)">
+                <div class="form-group">
+                    <label data-text="full_name">الاسم الكامل</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label data-text="email">البريد الإلكتروني</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label data-text="password">كلمة المرور</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label data-text="account_type">نوع الحساب</label>
+                    <select id="registerRole" required>
+                        <option value="buyer" data-text="buyer">مشتري</option>
+                        <option value="seller" data-text="seller">بائع</option>
+                    </select>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary" data-text="register_btn">تسجيل</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('registerModal')" data-text="cancel">إلغاء</button>
+                </div>
+                <div class="toggle-link">
+                    <span data-text="have_account">هل لديك حساب؟</span> <a onclick="toggleForms()" data-text="login_now">دخول</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="notification" id="notification"></div>
+    <script src="js/i18n.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
