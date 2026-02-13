@@ -54,6 +54,7 @@ async function addProduct(event) {
 
     showNotification(t('product_added', { name: name }));
     if (typeof loadSellerProducts === 'function') loadSellerProducts();
+    if (typeof loadAllProducts === 'function') loadAllProducts();
 }
 
 function openEditModal(productId) {
