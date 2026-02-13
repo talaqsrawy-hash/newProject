@@ -76,6 +76,48 @@
             <h3 data-text="my_products">منتجاتي</h3>
             <div class="products-grid" id="sellerProducts"></div>
         </div>
+
+        <!-- Edit Product Modal -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 data-text="edit_product">تعديل المنتج</h3>
+                    <button class="close-btn" onclick="closeModal('editModal')">×</button>
+                </div>
+                <form onsubmit="saveEditProduct(event)">
+                    <div class="form-group">
+                        <label data-text="product_name">اسم المنتج</label>
+                        <input type="text" id="editProductName" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-text="product_desc">الوصف</label>
+                        <input type="text" id="editProductDesc" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-text="product_price">السعر (د.ك)</label>
+                        <input type="number" id="editProductPrice" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-text="product_image">صورة المنتج (رابط)</label>
+                        <input type="url" id="editProductImage" placeholder="https://example.com/image.jpg">
+                        <div style="margin-top:0.5rem; font-size:0.9rem; color:#666;">أو حمل صورة من جهازك:</div>
+                        <input type="file" id="editProductImageFile" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label data-text="product_category">الفئة</label>
+                        <select id="editProductCategory">
+                            <option value="cement" data-text="cat_cement">أسمنت</option>
+                            <option value="iron" data-text="cat_iron">حديد</option>
+                            <option value="plumbing" data-text="cat_plumbing">سباكة</option>
+                            <option value="electrical" data-text="cat_electrical">كهرباء</option>
+                            <option value="paint" data-text="cat_paint">دهانات</option>
+                            <option value="tools" data-text="cat_tools">عدد</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" data-text="save_changes">حفظ التغييرات</button>
+                </form>
+            </div>
+        </div>
     </div>
     <div id="loginModal" class="modal">
         <div class="modal-content">
