@@ -3,40 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Dashboard UI</title>
+    <title>مواد البناء - للتجارة والاستيراد</title>
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- أيقونات Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Reset و خطوط أساسية */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            font-family: 'Cairo', sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
-            min-height: 100vh;
-            padding: 2rem;
-            color: #c9d1d9;
+            background-color: #f8f9fa;
+            color: #333;
         }
 
-        /* الحاوية الرئيسية */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* رأس الصفحة - يشبه GitHub */
-        .header {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+        /* شريط التنقل */
+        .navbar {
+            background: linear-gradient(135deg, #1e2b3a 0%, #2c3e50 100%);
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .logo {
@@ -46,413 +41,820 @@
         }
 
         .logo i {
-            font-size: 32px;
-            color: #fff;
+            font-size: 2rem;
+            color: #f39c12;
         }
 
         .logo span {
-            font-size: 24px;
-            font-weight: 600;
-            color: #fff;
-        }
-
-        /* زر SSH المميز */
-        .ssh-badge {
-            background: #238636;
             color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid #2ea043;
+            font-size: 1.5rem;
+            font-weight: 700;
         }
 
-        /* بطاقات الإحصائيات */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #f39c12;
+        }
+
+        /* أيقونات المستخدم والسلة */
+        .user-actions {
+            display: flex;
             gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 1.5rem;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            border-color: #58a6ff;
-        }
-
-        .stat-title {
-            color: #8b949e;
-            font-size: 14px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .stat-number {
-            font-size: 32px;
-            font-weight: 600;
-            color: #fff;
-        }
-
-        /* قسم المستودعات */
-        .repos-section {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
         }
 
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #fff;
-        }
-
-        /* زر رئيسي */
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            border: 1px solid rgba(240, 246, 252, 0.1);
-            background: #21262d;
-            color: #c9d1d9;
-            font-size: 14px;
+        .cart-icon {
+            position: relative;
             cursor: pointer;
-            transition: background 0.2s;
+        }
+
+        .cart-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #f39c12;
+            color: #1e2b3a;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
         }
 
-        .btn-primary {
-            background: #238636;
+        /* قسم البطل الرئيسي */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
             color: white;
-            border: 1px solid #2ea043;
         }
 
-        .btn-primary:hover {
-            background: #2ea043;
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: #f39c12;
+            color: #1e2b3a;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
         }
 
         .btn:hover {
-            background: #30363d;
+            background: #e67e22;
+            transform: translateY(-2px);
         }
 
-        /* قائمة المستودعات */
-        .repo-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        /* قسم التصنيفات */
+        .categories {
+            padding: 4rem 5%;
         }
 
-        .repo-item {
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #1e2b3a;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .category-card {
+            background: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .category-card i {
+            font-size: 3rem;
+            color: #f39c12;
+            margin-bottom: 1rem;
+        }
+
+        .category-card h3 {
+            font-size: 1.3rem;
+            color: #1e2b3a;
+        }
+
+        /* قسم المنتجات */
+        .products-section {
+            padding: 4rem 5%;
+            background: #f8f9fa;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f39c12;
+            color: #1e2b3a;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            z-index: 1;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            color: #1e2b3a;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .product-price-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            transition: background 0.2s;
+            margin-top: 1rem;
         }
 
-        .repo-item:hover {
-            background: #161b22;
-            border-color: #58a6ff;
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f39c12;
         }
 
-        .repo-info h3 {
-            color: #58a6ff;
-            font-size: 16px;
-            margin-bottom: 4px;
+        .product-old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9rem;
+            margin-right: 8px;
         }
 
-        .repo-info p {
-            color: #8b949e;
-            font-size: 12px;
+        .add-to-cart {
+            background: #1e2b3a;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
         }
 
-        .repo-stats {
+        .add-to-cart:hover {
+            background: #f39c12;
+            color: #1e2b3a;
+        }
+
+        /* سلة التسوق الجانبية */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 380px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: left 0.3s ease;
+            z-index: 1001;
             display: flex;
-            gap: 16px;
-            color: #8b949e;
-            font-size: 12px;
+            flex-direction: column;
         }
 
-        /* أيقونات (باستخدام Font Awesome) */
-        .icon {
-            width: 16px;
-            height: 16px;
-            display: inline-block;
+        .cart-sidebar.open {
+            left: 0;
         }
 
-        /* نافذة SSH المنبثقة */
-        .ssh-modal {
+        .cart-header {
+            background: #1e2b3a;
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h3 {
+            font-size: 1.3rem;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+            color: #1e2b3a;
+            font-size: 0.95rem;
+        }
+
+        .cart-item-price {
+            color: #f39c12;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .quantity-btn {
+            background: #f0f0f0;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-item-total {
+            font-weight: 600;
+            color: #1e2b3a;
+        }
+
+        .remove-item {
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 2px solid #eee;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 12px;
+            background: #f39c12;
+            color: #1e2b3a;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background: #e67e22;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #999;
+            padding: 2rem;
+        }
+
+        /* خلفية معتمة عند فتح السلة */
+        .overlay {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
+            background: rgba(0,0,0,0.5);
             z-index: 1000;
         }
 
-        .modal-content {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
+        .overlay.active {
+            display: block;
         }
 
-        .modal-content h3 {
-            color: #fff;
-            margin-bottom: 1rem;
+        /* إشعارات */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1e2b3a;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 2000;
         }
 
-        .ssh-key-box {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 1rem;
-            margin: 1rem 0;
-            font-family: monospace;
-            color: #7ee787;
-            direction: ltr;
-            text-align: left;
-            word-break: break-all;
+        .notification.show {
+            transform: translateX(0);
         }
 
-        .close-btn {
-            margin-top: 1rem;
-            width: 100%;
+        /* تذييل الصفحة */
+        .footer {
+            background: #1e2b3a;
+            color: white;
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .footer i {
+            color: #f39c12;
+            margin: 0 5px;
+        }
+
+        /* استجابة للجوال */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .cart-sidebar {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- رأس الصفحة -->
-        <div class="header">
-            <div class="logo">
-                <svg height="32" width="32" viewBox="0 0 16 16" fill="white">
-                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-                </svg>
-                <span>GitHub Dashboard</span>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-hard-hat"></i>
+            <span>مواد البناء</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="active">الرئيسية</a>
+            <a href="#products">المنتجات</a>
+            <a href="#categories">التصنيفات</a>
+            <a href="#">من نحن</a>
+            <a href="#">اتصل بنا</a>
+        </div>
+        <div class="user-actions">
+            <div class="cart-icon" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
             </div>
-            <div class="ssh-badge">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM2 8a6 6 0 1 0 12 0A6 6 0 0 0 2 8zm10 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/>
-                </svg>
-                🔐 SSH Connected: ed25519
+            <i class="fas fa-user-circle" style="color: white; font-size: 1.5rem; cursor: pointer;"></i>
+        </div>
+    </nav>
+
+    <!-- قسم البطل الرئيسي -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>مواد بناء بأعلى جودة</h1>
+            <p>استيراد وتصدير جميع مواد البناء من أشهر الماركات العالمية</p>
+            <a href="#products" class="btn">تسوق الآن</a>
+        </div>
+    </section>
+
+    <!-- قسم التصنيفات -->
+    <section class="categories" id="categories">
+        <div class="section-title">
+            <h2>تصنيفات المنتجات</h2>
+            <p>اختر من بين أشهر تصنيفات مواد البناء</p>
+        </div>
+        <div class="category-grid">
+            <div class="category-card" onclick="filterByCategory('اسمنت')">
+                <i class="fas fa-cubes"></i>
+                <h3>أسمنت ومواد بناء</h3>
+            </div>
+            <div class="category-card" onclick="filterByCategory('حديد')">
+                <i class="fas fa-bars"></i>
+                <h3>حديد وتسليح</h3>
+            </div>
+            <div class="category-card" onclick="filterByCategory('سباكة')">
+                <i class="fas fa-water"></i>
+                <h3>أدوات سباكة</h3>
+            </div>
+            <div class="category-card" onclick="filterByCategory('كهرباء')">
+                <i class="fas fa-bolt"></i>
+                <h3>أدوات كهرباء</h3>
+            </div>
+            <div class="category-card" onclick="filterByCategory('دهانات')">
+                <i class="fas fa-paint-brush"></i>
+                <h3>دهانات وعوازل</h3>
+            </div>
+            <div class="category-card" onclick="filterByCategory('عدد')">
+                <i class="fas fa-tools"></i>
+                <h3>عدد وأدوات</h3>
             </div>
         </div>
+    </section>
 
-        <!-- بطاقات الإحصائيات -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-title">
-                    <span>📦 المستودعات</span>
-                    <span>+3 هذا الشهر</span>
-                </div>
-                <div class="stat-number" id="repoCount">24</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">
-                    <span>🔀 Pull Requests</span>
-                    <span>+12</span>
-                </div>
-                <div class="stat-number" id="prCount">156</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">
-                    <span>🐛 Issues</span>
-                    <span>8 مفتوحة</span>
-                </div>
-                <div class="stat-number" id="issuesCount">23</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">
-                    <span>⭐ Stars</span>
-                    <span>+45</span>
-                </div>
-                <div class="stat-number" id="starsCount">1,247</div>
-            </div>
+    <!-- قسم المنتجات -->
+    <section class="products-section" id="products">
+        <div class="section-title">
+            <h2>منتجات مميزة</h2>
+            <p>أحدث وأفضل منتجات مواد البناء</p>
         </div>
-
-        <!-- قسم المستودعات -->
-        <div class="repos-section">
-            <div class="section-header">
-                <h2 class="section-title">📂 المستودعات النشطة</h2>
-                <button class="btn btn-primary" onclick="showSSHModal()">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM2 8a6 6 0 1 0 12 0A6 6 0 0 0 2 8zm10 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/>
-                    </svg>
-                    إعداد SSH جديد
-                </button>
-            </div>
-
-            <!-- قائمة المستودعات (تتغير بالجافاسكريبت) -->
-            <div class="repo-list" id="repoList">
-                <!-- هنا راح تظهر المستودعات -->
-            </div>
+        <div class="products-grid" id="productsGrid">
+            <!-- المنتجات ستتم إضافتها هنا عبر JavaScript -->
         </div>
+    </section>
 
-        <!-- قسم أزرار SSH -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-            <button class="btn" onclick="cloneRepo('frontend')">
-                📋 git clone (SSH) - frontend
-            </button>
-            <button class="btn" onclick="cloneRepo('backend')">
-                📋 git clone (SSH) - backend
-            </button>
-            <button class="btn btn-primary" onclick="pushChanges()">
-                🚀 git push (محاكاة)
-            </button>
-            <button class="btn" onclick="pullChanges()">
-                📥 git pull (محاكاة)
+    <!-- سلة التسوق الجانبية -->
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> سلة التسوق</h3>
+            <button class="close-cart" onclick="toggleCart()">×</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- عناصر السلة ستتم إضافتها هنا -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>المجموع:</span>
+                <span id="cartTotal">0.00 د.ك</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">
+                <i class="fas fa-credit-card"></i> إتمام الشراء
             </button>
         </div>
     </div>
 
-    <!-- نافذة SSH المنبثقة -->
-    <div id="sshModal" class="ssh-modal">
-        <div class="modal-content">
-            <h3>🔑 مفتاح SSH العام</h3>
-            <p style="color: #8b949e; margin-bottom: 1rem;">انسخ هذا المفتاح وأضفه على GitHub:</p>
-            <div class="ssh-key-box" id="sshKeyDisplay">
-                ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEXAMPLEkeygithub2024user@device
-            </div>
-            <button class="btn close-btn" onclick="hideSSHModal()">إغلاق</button>
-        </div>
-    </div>
+    <!-- إشعار -->
+    <div class="notification" id="notification"></div>
 
     <script>
-        // بيانات المستودعات (مثال)
-        const repositories = [
+        // بيانات المنتجات (من ملف JSON)
+        const products = [
             {
-                name: "my-awesome-project",
-                description: "مشروع تجريبي لتعلم SSH على GitHub",
-                language: "JavaScript",
-                stars: 45,
-                forks: 12,
-                updated: "منذ ساعتين"
+                id: 1,
+                name: "أسمنت بورتلاندي عادي",
+                description: "أسمنت عالي الجودة للتشييد والبناء، كيس 50 كجم",
+                price: 3.50,
+                oldPrice: 4.00,
+                image: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+                category: "اسمنت",
+                badge: "وفر 15%"
             },
             {
-                name: "ssh-test-repo",
-                description: "مستودع لاختبار اتصال SSH",
-                language: "HTML",
-                stars: 23,
-                forks: 5,
-                updated: "منذ 5 ساعات"
+                id: 2,
+                name: "حديد تسليح 16 مم",
+                description: "حديد تسليح عالي المقاومة، طول 12 متر",
+                price: 12.50,
+                oldPrice: 14.00,
+                image: "https://images.unsplash.com/photo-1541976590-7139412e8b8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+                category: "حديد",
+                badge: "خصم خاص"
             },
             {
-                name: "github-pages-site",
-                description: "موقعي الشخصي على GitHub Pages",
-                language: "CSS",
-                stars: 89,
-                forks: 34,
-                updated: "أمس"
+                id: 3,
+                name: "خلاط ماء حلزوني",
+                description: "خلاط ماء حلزوني فاخر من النحاس الخالص",
+                price: 25.00,
+                oldPrice: 32.00,
+                image: "https://images.unsplash.com/photo-1589778655361-8c2d8a5abf2a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+                category: "سباكة",
+                badge: "الأكثر مبيعاً"
+            },
+            {
+                id: 4,
+                name: "قاطع كهربائي 16 أمبير",
+                description: "قاطع كهربائي أتوماتيكي، الجهد 220V",
+                price: 4.75,
+                oldPrice: 6.00,
+                image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1169&q=80",
+                category: "كهرباء",
+                badge: "جودة عالية"
+            },
+            {
+                id: 5,
+                name: "دهان ايبوكسي أرضيات",
+                description: "دهان إيبوكسي للأرضيات الخرسانية، مجموعة 10 كجم",
+                price: 45.00,
+                oldPrice: 55.00,
+                image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+                category: "دهانات",
+                badge: "وفر 20%"
+            },
+            {
+                id: 6,
+                name: "شنيور كهربائي 600 واط",
+                description: "شنيور مزود بضربة، مناسب لجميع أعمال الثقب",
+                price: 38.00,
+                oldPrice: 45.00,
+                image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+                category: "عدد",
+                badge: "ضمان سنتين"
+            },
+            {
+                id: 7,
+                name: "جبس بودرة ناعمة",
+                description: "جبس أبيض ناعم للتشطيب والديكور، كيس 30 كجم",
+                price: 8.25,
+                oldPrice: 9.50,
+                image: "https://images.unsplash.com/photo-1558901356-1a5b6a8b9b9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+                category: "اسمنت",
+                badge: "وفر 15%"
+            },
+            {
+                id: 8,
+                name: "سيراميك أرضيات 40×40",
+                description: "سيراميك أرضيات درجة أولى، مقاوم للخدش",
+                price: 7.50,
+                oldPrice: 9.00,
+                image: "https://images.unsplash.com/photo-1594046243099-6d94b5a4d9b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+                category: "دهانات",
+                badge: "تشكيلة واسعة"
             }
         ];
 
-        // دالة عرض المستودعات
-        function displayRepositories() {
-            const repoList = document.getElementById('repoList');
-            repoList.innerHTML = '';
-            
-            repositories.forEach(repo => {
-                const repoItem = document.createElement('div');
-                repoItem.className = 'repo-item';
-                repoItem.innerHTML = `
-                    <div class="repo-info">
-                        <h3>📁 ${repo.name}</h3>
-                        <p>${repo.description}</p>
-                        <div style="display: flex; gap: 16px; margin-top: 8px;">
-                            <span style="color: #8b949e;">🔵 ${repo.language}</span>
-                            <span style="color: #8b949e;">⭐ ${repo.stars}</span>
-                            <span style="color: #8b949e;">🔀 ${repo.forks}</span>
+        // سلة التسوق
+        let cart = [];
+
+        // عرض المنتجات
+        function displayProducts(productsToShow = products) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            productsToShow.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <span class="product-badge">${product.badge}</span>
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price-row">
+                            <div>
+                                <span class="product-price">${product.price.toFixed(3)} د.ك</span>
+                                <span class="product-old-price">${product.oldPrice.toFixed(3)} د.ك</span>
+                            </div>
+                            <button class="add-to-cart" onclick="addToCart(${product.id})">
+                                <i class="fas fa-cart-plus"></i> أضف للسلة
+                            </button>
                         </div>
                     </div>
-                    <div style="color: #8b949e; font-size: 12px;">
-                        ⏱️ ${repo.updated}
-                    </div>
                 `;
-                repoList.appendChild(repoItem);
+                grid.appendChild(card);
             });
         }
 
-        // دالة عرض نافذة SSH
-        function showSSHModal() {
-            document.getElementById('sshModal').style.display = 'flex';
-            // تغيير المفتاح كل مرة (محاكاة)
-            const randomKey = 'ssh-ed25519 ' + Math.random().toString(36).substring(2, 15) + ' user@github-demo';
-            document.getElementById('sshKeyDisplay').textContent = randomKey;
+        // إضافة منتج للسلة
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+
+            updateCart();
+            showNotification(`تم إضافة ${product.name} إلى السلة`);
         }
 
-        // دالة إخفاء نافذة SSH
-        function hideSSHModal() {
-            document.getElementById('sshModal').style.display = 'none';
+        // تحديث السلة
+        function updateCart() {
+            // تحديث العداد
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+
+            // عرض عناصر السلة
+            const cartContainer = document.getElementById('cartItems');
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<div class="empty-cart">السلة فارغة</div>';
+            } else {
+                cartContainer.innerHTML = '';
+                cart.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'cart-item';
+                    itemElement.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${item.name}</div>
+                            <div class="cart-item-price">${item.price.toFixed(3)} د.ك</div>
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                                <span class="cart-item-total">${(item.price * item.quantity).toFixed(3)} د.ك</span>
+                            </div>
+                            <div class="remove-item" onclick="removeFromCart(${item.id})">
+                                <i class="fas fa-trash"></i> إزالة
+                            </div>
+                        </div>
+                    `;
+                    cartContainer.appendChild(itemElement);
+                });
+            }
+
+            // تحديث المجموع
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('cartTotal').textContent = total.toFixed(3) + ' د.ك';
         }
 
-        // محاكاة git clone
-        function cloneRepo(repoType) {
-            const repoName = repoType === 'frontend' ? 'frontend-app' : 'backend-api';
-            alert(`✅ git clone git@github.com:yourusername/${repoName}.git\n\nتم نسخ أمر clone! (محاكاة SSH)`);
-        }
-
-        // محاكاة git push
-        function pushChanges() {
-            alert(`🚀 git push origin main\n\nمحاكاة: تم رفع التغييرات بنجاح عبر SSH!`);
-            // تحديث وقت آخر تحديث
-            repositories[0].updated = "الآن";
-            displayRepositories();
-        }
-
-        // محاكاة git pull
-        function pullChanges() {
-            alert(`📥 git pull origin main\n\nمحاكاة: تم جلب آخر التحديثات عبر SSH!`);
-        }
-
-        // إغلاق النافذة المنبثقة عند الضغط خارجها
-        window.onclick = function(event) {
-            const modal = document.getElementById('sshModal');
-            if (event.target === modal) {
-                hideSSHModal();
+        // تحديث الكمية
+        function updateQuantity(productId, change) {
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCart();
+                }
             }
         }
 
-        // عرض المستودعات عند تحميل الصفحة
-        displayRepositories();
+        // إزالة من السلة
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
 
-        // تحديث الإحصائيات (محاكاة)
-        setInterval(() => {
-            const starsElement = document.getElementById('starsCount');
-            if (starsElement) {
-                let currentStars = parseInt(starsElement.textContent.replace(',', ''));
-                currentStars += 1;
-                starsElement.textContent = currentStars.toLocaleString();
+        // تبديل ظهور السلة
+        function toggleCart() {
+            const sidebar = document.getElementById('cartSidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        // إظهار إشعار
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // إتمام الشراء
+        function checkout() {
+            if (cart.length === 0) {
+                showNotification('السلة فارغة');
+                return;
             }
-        }, 5000); // تزيد النجوم كل 5 ثواني
+            alert('شكراً لتسوقكم! تم إتمام عملية الشراء بنجاح');
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+
+        // تصفية حسب التصنيف
+        function filterByCategory(category) {
+            const filtered = products.filter(p => p.category === category);
+            displayProducts(filtered);
+            showNotification(`عرض منتجات: ${category}`);
+        }
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            displayProducts();
+            updateCart();
+        });
     </script>
+
+    <!-- تذييل الصفحة -->
+    <footer class="footer">
+        <p>
+            <i class="fas fa-copyright"></i> 2025 شركة مواد البناء للتجارة والاستيراد. جميع الحقوق محفوظة.
+            <br>
+            <i class="fas fa-truck"></i> شحن لجميع الدول العربية | <i class="fas fa-shield-alt"></i> ضمان الجودة | <i class="fas fa-headset"></i> دعم فني 24/7
+        </p>
+    </footer>
 </body>
 </html>
