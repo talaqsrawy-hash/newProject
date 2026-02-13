@@ -415,7 +415,7 @@
     <nav class="navbar">
         <div class="logo">
             <i class="fas fa-building"></i>
-            <span>منصة البناء</span>
+            <span data-text="platform_name">منصة البناء</span>
         </div>
         <div class="user-actions">
             <select class="lang-selector" id="langSelect" onchange="changeLanguage(this.value)">
@@ -468,14 +468,18 @@
                         <input type="number" id="productPrice" step="0.01" required>
                     </div>
                     <div class="form-group">
+                        <label data-text="product_image">صورة المنتج (رابط)</label>
+                        <input type="url" id="productImage" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="form-group">
                         <label data-text="product_category">الفئة</label>
                         <select id="productCategory">
-                            <option>أسمنت</option>
-                            <option>حديد</option>
-                            <option>سباكة</option>
-                            <option>كهرباء</option>
-                            <option>دهانات</option>
-                            <option>عدد</option>
+                            <option value="cement" data-text="cat_cement">أسمنت</option>
+                            <option value="iron" data-text="cat_iron">حديد</option>
+                            <option value="plumbing" data-text="cat_plumbing">سباكة</option>
+                            <option value="electrical" data-text="cat_electrical">كهرباء</option>
+                            <option value="paint" data-text="cat_paint">دهانات</option>
+                            <option value="tools" data-text="cat_tools">عدد</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;" data-text="add_product_btn">إضافة المنتج</button>
@@ -573,10 +577,54 @@
 
     <div class="notification" id="notification"></div>
 
+    <!-- Modal للتعديل -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-text="edit_product">تعديل المنتج</h3>
+                <button class="close-btn" onclick="closeModal('editModal')">×</button>
+            </div>
+            <form onsubmit="saveEditProduct(event)">
+                <div class="form-group">
+                    <label data-text="product_name">اسم المنتج</label>
+                    <input type="text" id="editProductName" required>
+                </div>
+                <div class="form-group">
+                    <label data-text="product_desc">الوصف</label>
+                    <input type="text" id="editProductDesc" required>
+                </div>
+                <div class="form-group">
+                    <label data-text="product_price">السعر (د.ك)</label>
+                    <input type="number" id="editProductPrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label data-text="product_image">صورة المنتج (رابط)</label>
+                    <input type="url" id="editProductImage">
+                </div>
+                <div class="form-group">
+                    <label data-text="product_category">الفئة</label>
+                    <select id="editProductCategory">
+                        <option value="cement" data-text="cat_cement">أسمنت</option>
+                        <option value="iron" data-text="cat_iron">حديد</option>
+                        <option value="plumbing" data-text="cat_plumbing">سباكة</option>
+                        <option value="electrical" data-text="cat_electrical">كهرباء</option>
+                        <option value="paint" data-text="cat_paint">دهانات</option>
+                        <option value="tools" data-text="cat_tools">عدد</option>
+                    </select>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary" data-text="save">حفظ</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editModal')" data-text="cancel">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         // نظام الترجمات
         const translations = {
             ar: {
+                platform_name: 'منصة البناء',
                 login: 'دخول',
                 register: 'تسجيل',
                 logout: 'تسجيل خروج',
@@ -585,6 +633,7 @@
                 email: 'البريد الإلكتروني',
                 password: 'كلمة المرور',
                 cancel: 'إلغاء',
+                save: 'حفظ',
                 full_name: 'الاسم الكامل',
                 account_type: 'نوع الحساب',
                 buyer: 'مشتري',
@@ -599,11 +648,20 @@
                 add_product: 'إضافة منتج',
                 my_products: 'منتجاتي',
                 add_new_product: 'إضافة منتج جديد',
+                edit_product: 'تعديل المنتج',
                 product_name: 'اسم المنتج',
                 product_desc: 'الوصف',
                 product_price: 'السعر (د.ك)',
+                product_image: 'صورة المنتج (رابط)',
                 product_category: 'الفئة',
+                cat_cement: 'أسمنت',
+                cat_iron: 'حديد',
+                cat_plumbing: 'سباكة',
+                cat_electrical: 'كهرباء',
+                cat_paint: 'دهانات',
+                cat_tools: 'عدد',
                 add_product_btn: 'إضافة المنتج',
+                edit_btn: 'تعديل',
                 browse_products: 'تصفح المنتجات',
                 shopping_cart: 'السلة',
                 all_products: 'جميع المنتجات',
@@ -617,6 +675,7 @@
                 seller_name: 'البائع',
                 no_products: 'لم تضف أي منتجات بعد',
                 product_added: 'تم إضافة {name} بنجاح',
+                product_updated: 'تم تحديث {name} بنجاح',
                 product_deleted: 'تم حذف المنتج',
                 added_to_cart: 'تم إضافة {name} إلى السلة',
                 welcome: 'أهلاً {name}!',
@@ -628,6 +687,7 @@
                 total_purchase: 'إجمالي المشتريات: {total} د.ك'
             },
             en: {
+                platform_name: 'Building Platform',
                 login: 'Login',
                 register: 'Register',
                 logout: 'Logout',
@@ -636,6 +696,7 @@
                 email: 'Email',
                 password: 'Password',
                 cancel: 'Cancel',
+                save: 'Save',
                 full_name: 'Full Name',
                 account_type: 'Account Type',
                 buyer: 'Buyer',
@@ -650,11 +711,20 @@
                 add_product: 'Add Product',
                 my_products: 'My Products',
                 add_new_product: 'Add New Product',
+                edit_product: 'Edit Product',
                 product_name: 'Product Name',
                 product_desc: 'Description',
                 product_price: 'Price (KD)',
+                product_image: 'Product Image (URL)',
                 product_category: 'Category',
+                cat_cement: 'Cement',
+                cat_iron: 'Iron/Rebar',
+                cat_plumbing: 'Plumbing',
+                cat_electrical: 'Electrical',
+                cat_paint: 'Paints',
+                cat_tools: 'Tools',
                 add_product_btn: 'Add Product',
+                edit_btn: 'Edit',
                 browse_products: 'Browse Products',
                 shopping_cart: 'Cart',
                 all_products: 'All Products',
@@ -668,6 +738,7 @@
                 seller_name: 'Seller',
                 no_products: 'No products added yet',
                 product_added: '{name} added successfully',
+                product_updated: '{name} updated successfully',
                 product_deleted: 'Product deleted',
                 added_to_cart: '{name} added to cart',
                 welcome: 'Welcome {name}!',
@@ -688,6 +759,11 @@
                 text = text.replace(`{${placeholder}}`, value);
             }
             return text;
+        }
+
+        function getCategoryTranslation(categoryValue) {
+            const key = 'cat_' + categoryValue;
+            return t(key);
         }
 
         function updateAllText() {
@@ -851,6 +927,7 @@
             const name = document.getElementById('productName').value;
             const desc = document.getElementById('productDesc').value;
             const price = parseFloat(document.getElementById('productPrice').value);
+            const image = document.getElementById('productImage').value || 'https://via.placeholder.com/200?text=' + encodeURIComponent(name);
             const category = document.getElementById('productCategory').value;
 
             const product = {
@@ -858,6 +935,7 @@
                 name,
                 desc,
                 price,
+                image,
                 category,
                 sellerId: store.currentUser.id,
                 sellerName: store.currentUser.name
@@ -870,9 +948,47 @@
             document.getElementById('productName').value = '';
             document.getElementById('productDesc').value = '';
             document.getElementById('productPrice').value = '';
+            document.getElementById('productImage').value = '';
 
             showNotification(t('product_added', { name: name }));
             loadSellerProducts();
+        }
+
+        let editingProductId = null;
+
+        function openEditModal(productId) {
+            const product = store.products.find(p => p.id === productId);
+            if (!product) return;
+
+            editingProductId = productId;
+            document.getElementById('editProductName').value = product.name;
+            document.getElementById('editProductDesc').value = product.desc;
+            document.getElementById('editProductPrice').value = product.price;
+            document.getElementById('editProductImage').value = product.image;
+            document.getElementById('editProductCategory').value = product.category;
+
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function saveEditProduct(event) {
+            event.preventDefault();
+            const product = store.products.find(p => p.id === editingProductId);
+            if (!product) return;
+
+            product.name = document.getElementById('editProductName').value;
+            product.desc = document.getElementById('editProductDesc').value;
+            product.price = parseFloat(document.getElementById('editProductPrice').value);
+            product.image = document.getElementById('editProductImage').value;
+            product.category = document.getElementById('editProductCategory').value;
+
+            store.save();
+            closeModal('editModal');
+            editingProductId = null;
+            showNotification(t('product_updated', { name: product.name }));
+            loadSellerProducts();
+            if (store.currentUser.role === 'buyer') {
+                loadAllProducts();
+            }
         }
 
         function loadSellerProducts() {
@@ -886,13 +1002,18 @@
 
             container.innerHTML = products.map(product => `
                 <div class="product-card">
-                    <div class="product-image"><i class="fas fa-cube"></i></div>
+                    <div class="product-image" style="background-image: url('${product.image}'); background-size: cover; background-position: center;">
+                        ${!product.image ? '<i class="fas fa-cube"></i>' : ''}
+                    </div>
                     <div class="product-info">
                         <div class="product-title">${product.name}</div>
                         <div style="font-size: 0.9rem; color: #666; margin: 0.5rem 0;">${product.desc}</div>
                         <div class="product-price">${product.price.toFixed(2)} د.ك</div>
-                        <div style="font-size: 0.85rem; color: #f39c12; margin-bottom: 1rem;">${product.category}</div>
+                        <div style="font-size: 0.85rem; color: #f39c12; margin-bottom: 1rem;">${getCategoryTranslation(product.category)}</div>
                         <div class="product-actions">
+                            <button class="btn-small" style="background: #3498db; color: white;" onclick="openEditModal(${product.id})">
+                                <i class="fas fa-edit"></i> ${t('edit_btn')}
+                            </button>
                             <button class="btn-small btn-delete" onclick="deleteProduct(${product.id})">
                                 <i class="fas fa-trash"></i> ${t('delete')}
                             </button>
@@ -920,13 +1041,15 @@
 
             container.innerHTML = store.products.map(product => `
                 <div class="product-card">
-                    <div class="product-image"><i class="fas fa-cube"></i></div>
+                    <div class="product-image" style="background-image: url('${product.image}'); background-size: cover; background-position: center;">
+                        ${!product.image ? '<i class="fas fa-cube"></i>' : ''}
+                    </div>
                     <div class="product-info">
                         <div class="product-title">${product.name}</div>
                         <div class="product-seller"><i class="fas fa-user"></i> ${product.sellerName}</div>
                         <div style="font-size: 0.9rem; color: #666; margin: 0.5rem 0;">${product.desc}</div>
                         <div class="product-price">${product.price.toFixed(2)} د.ك</div>
-                        <div style="font-size: 0.85rem; color: #f39c12; margin-bottom: 1rem;">${product.category}</div>
+                        <div style="font-size: 0.85rem; color: #f39c12; margin-bottom: 1rem;">${getCategoryTranslation(product.category)}</div>
                         <div class="product-actions">
                             <button class="btn-small btn-add-cart" onclick="addToCart(${product.id})">
                                 <i class="fas fa-cart-plus"></i> ${t('add')}
@@ -967,7 +1090,9 @@
                 <div class="products-grid">
                     ${store.cart.map(item => `
                         <div class="product-card">
-                            <div class="product-image"><i class="fas fa-cube"></i></div>
+                            <div class="product-image" style="background-image: url('${item.image}'); background-size: cover; background-position: center;">
+                                ${!item.image ? '<i class="fas fa-cube"></i>' : ''}
+                            </div>
                             <div class="product-info">
                                 <div class="product-title">${item.name}</div>
                                 <div class="product-seller"><i class="fas fa-user"></i> ${item.sellerName}</div>
