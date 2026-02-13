@@ -70,6 +70,16 @@
             color: #f39c12;
         }
 
+            /* لغة الموقع */
+            #langSelect {
+                background: transparent;
+                color: white;
+                border: 1px solid rgba(255,255,255,0.15);
+                padding: 6px 8px;
+                border-radius: 6px;
+                font-weight: 600;
+                cursor: pointer;
+            }
         /* أيقونات المستخدم والسلة */
         .user-actions {
             display: flex;
@@ -513,16 +523,20 @@
     <nav class="navbar">
         <div class="logo">
             <i class="fas fa-hard-hat"></i>
-            <span>مواد البناء</span>
+            <span data-i18n="logo">مواد البناء</span>
         </div>
         <div class="nav-links">
-            <a href="#" class="active">الرئيسية</a>
-            <a href="#products">المنتجات</a>
-            <a href="#categories">التصنيفات</a>
-            <a href="#">من نحن</a>
-            <a href="#">اتصل بنا</a>
+            <a href="#" class="active" data-i18n="nav_home">الرئيسية</a>
+            <a href="#products" data-i18n="nav_products">المنتجات</a>
+            <a href="#categories" data-i18n="nav_categories">التصنيفات</a>
+            <a href="#" data-i18n="nav_about">من نحن</a>
+            <a href="#" data-i18n="nav_contact">اتصل بنا</a>
         </div>
         <div class="user-actions">
+            <select id="langSelect" aria-label="Language" onchange="changeLanguage(this.value)">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+            </select>
             <div class="cart-icon" onclick="toggleCart()">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="cart-count" id="cartCount">0</span>
@@ -534,42 +548,42 @@
     <!-- قسم البطل الرئيسي -->
     <section class="hero">
         <div class="hero-content">
-            <h1>مواد بناء بأعلى جودة</h1>
-            <p>استيراد وتصدير جميع مواد البناء من أشهر الماركات العالمية</p>
-            <a href="#products" class="btn">تسوق الآن</a>
+            <h1 data-i18n="hero_h1">مواد بناء بأعلى جودة</h1>
+            <p data-i18n="hero_p">استيراد وتصدير جميع مواد البناء من أشهر الماركات العالمية</p>
+            <a href="#products" class="btn" data-i18n="hero_cta">تسوق الآن</a>
         </div>
     </section>
 
     <!-- قسم التصنيفات -->
     <section class="categories" id="categories">
         <div class="section-title">
-            <h2>تصنيفات المنتجات</h2>
-            <p>اختر من بين أشهر تصنيفات مواد البناء</p>
+            <h2 data-i18n="categories_title">تصنيفات المنتجات</h2>
+            <p data-i18n="categories_desc">اختر من بين أشهر تصنيفات مواد البناء</p>
         </div>
         <div class="category-grid">
             <div class="category-card" onclick="filterByCategory('اسمنت')">
                 <i class="fas fa-cubes"></i>
-                <h3>أسمنت ومواد بناء</h3>
+                <h3 data-i18n="cat_cement">أسمنت ومواد بناء</h3>
             </div>
             <div class="category-card" onclick="filterByCategory('حديد')">
                 <i class="fas fa-bars"></i>
-                <h3>حديد وتسليح</h3>
+                <h3 data-i18n="cat_iron">حديد وتسليح</h3>
             </div>
             <div class="category-card" onclick="filterByCategory('سباكة')">
                 <i class="fas fa-water"></i>
-                <h3>أدوات سباكة</h3>
+                <h3 data-i18n="cat_plumbing">أدوات سباكة</h3>
             </div>
             <div class="category-card" onclick="filterByCategory('كهرباء')">
                 <i class="fas fa-bolt"></i>
-                <h3>أدوات كهرباء</h3>
+                <h3 data-i18n="cat_electrical">أدوات كهرباء</h3>
             </div>
             <div class="category-card" onclick="filterByCategory('دهانات')">
                 <i class="fas fa-paint-brush"></i>
-                <h3>دهانات وعوازل</h3>
+                <h3 data-i18n="cat_paint">دهانات وعوازل</h3>
             </div>
             <div class="category-card" onclick="filterByCategory('عدد')">
                 <i class="fas fa-tools"></i>
-                <h3>عدد وأدوات</h3>
+                <h3 data-i18n="cat_tools">عدد وأدوات</h3>
             </div>
         </div>
     </section>
@@ -577,8 +591,8 @@
     <!-- قسم المنتجات -->
     <section class="products-section" id="products">
         <div class="section-title">
-            <h2>منتجات مميزة</h2>
-            <p>أحدث وأفضل منتجات مواد البناء</p>
+            <h2 data-i18n="products_title">منتجات مميزة</h2>
+            <p data-i18n="products_desc">أحدث وأفضل منتجات مواد البناء</p>
         </div>
         <div class="products-grid" id="productsGrid">
             <!-- المنتجات ستتم إضافتها هنا عبر JavaScript -->
@@ -589,7 +603,7 @@
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
-            <h3><i class="fas fa-shopping-cart"></i> سلة التسوق</h3>
+            <h3><i class="fas fa-shopping-cart"></i> <span data-i18n="cart_title">سلة التسوق</span></h3>
             <button class="close-cart" onclick="toggleCart()">×</button>
         </div>
         <div class="cart-items" id="cartItems">
@@ -597,11 +611,11 @@
         </div>
         <div class="cart-footer">
             <div class="cart-total">
-                <span>المجموع:</span>
+                <span data-i18n="total">المجموع:</span>
                 <span id="cartTotal">0.00 د.ك</span>
             </div>
             <button class="checkout-btn" onclick="checkout()">
-                <i class="fas fa-credit-card"></i> إتمام الشراء
+                <i class="fas fa-credit-card"></i> <span data-i18n="checkout">إتمام الشراء</span>
             </button>
         </div>
     </div>
@@ -694,8 +708,59 @@
             }
         ];
 
+        // ترجمة واجهة المستخدم
+        const translations = {
+            ar: {
+                lang: 'ar', dir: 'rtl', title: 'مواد البناء - للتجارة والاستيراد', logo: 'مواد البناء',
+                nav_home: 'الرئيسية', nav_products: 'المنتجات', nav_categories: 'التصنيفات', nav_about: 'من نحن', nav_contact: 'اتصل بنا',
+                hero_h1: 'مواد بناء بأعلى جودة', hero_p: 'استيراد وتصدير جميع مواد البناء من أشهر الماركات العالمية', hero_cta: 'تسوق الآن',
+                categories_title: 'تصنيفات المنتجات', categories_desc: 'اختر من بين أشهر تصنيفات مواد البناء',
+                cat_cement: 'أسمنت ومواد بناء', cat_iron: 'حديد وتسليح', cat_plumbing: 'أدوات سباكة', cat_electrical: 'أدوات كهرباء', cat_paint: 'دهانات وعوازل', cat_tools: 'عدد وأدوات',
+                products_title: 'منتجات مميزة', products_desc: 'أحدث وأفضل منتجات مواد البناء',
+                cart_title: 'سلة التسوق', cart_empty: 'السلة فارغة', total: 'المجموع:', checkout: 'إتمام الشراء',
+                footer: '2025 شركة مواد البناء للتجارة والاستيراد. جميع الحقوق محفوظة. شحن لجميع الدول العربية | ضمان الجودة | دعم فني 24/7',
+                add_to_cart: 'أضف للسلة', remove: 'إزالة',
+                notification_added: 'تم إضافة {name} إلى السلة', notification_empty: 'السلة فارغة', purchase_success: 'شكراً لتسوقكم! تم إتمام عملية الشراء بنجاح', show_products: 'عرض منتجات: {category}'
+            },
+            en: {
+                lang: 'en', dir: 'ltr', title: 'Building Materials - Trade & Import', logo: 'Building Materials',
+                nav_home: 'Home', nav_products: 'Products', nav_categories: 'Categories', nav_about: 'About Us', nav_contact: 'Contact',
+                hero_h1: 'Top Quality Building Materials', hero_p: 'Import and export building materials from top brands', hero_cta: 'Shop Now',
+                categories_title: 'Product Categories', categories_desc: 'Choose from the top building material categories',
+                cat_cement: 'Cement & Materials', cat_iron: 'Rebar & Iron', cat_plumbing: 'Plumbing Tools', cat_electrical: 'Electrical Tools', cat_paint: 'Paints & Insulation', cat_tools: 'Tools & Hardware',
+                products_title: 'Featured Products', products_desc: 'Latest and best building products',
+                cart_title: 'Shopping Cart', cart_empty: 'Cart is empty', total: 'Total:', checkout: 'Checkout',
+                footer: '2025 Building Materials Co. All rights reserved. Shipping to Arab countries | Quality guarantee | 24/7 support',
+                add_to_cart: 'Add to cart', remove: 'Remove',
+                notification_added: 'Added {name} to cart', notification_empty: 'Cart is empty', purchase_success: 'Thanks for shopping! Purchase completed successfully', show_products: 'Showing products: {category}'
+            }
+        };
+
         // سلة التسوق
         let cart = [];
+        let currentLang = localStorage.getItem('lang') || 'ar';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang] || translations.ar;
+            document.documentElement.lang = t.lang;
+            document.documentElement.dir = t.dir;
+            document.title = t.title;
+            // translate elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.textContent = t[key];
+            });
+            const select = document.getElementById('langSelect');
+            if (select) select.value = lang;
+            localStorage.setItem('lang', lang);
+        }
+
+        function changeLanguage(lang) {
+            setLanguage(lang);
+            // refresh products (to update button text)
+            displayProducts();
+        }
 
         // عرض المنتجات
         function displayProducts(productsToShow = products) {
@@ -717,7 +782,7 @@
                                 <span class="product-old-price">${product.oldPrice.toFixed(3)} د.ك</span>
                             </div>
                             <button class="add-to-cart" onclick="addToCart(${product.id})">
-                                <i class="fas fa-cart-plus"></i> أضف للسلة
+                                <i class="fas fa-cart-plus"></i> ${translations[currentLang].add_to_cart}
                             </button>
                         </div>
                     </div>
@@ -741,7 +806,8 @@
             }
 
             updateCart();
-            showNotification(`تم إضافة ${product.name} إلى السلة`);
+            const addedMsg = translations[currentLang].notification_added.replace('{name}', product.name);
+            showNotification(addedMsg);
         }
 
         // تحديث السلة
@@ -753,7 +819,7 @@
             // عرض عناصر السلة
             const cartContainer = document.getElementById('cartItems');
             if (cart.length === 0) {
-                cartContainer.innerHTML = '<div class="empty-cart">السلة فارغة</div>';
+                cartContainer.innerHTML = `<div class="empty-cart">${translations[currentLang].cart_empty}</div>`;
             } else {
                 cartContainer.innerHTML = '';
                 cart.forEach(item => {
@@ -771,7 +837,7 @@
                                 <span class="cart-item-total">${(item.price * item.quantity).toFixed(3)} د.ك</span>
                             </div>
                             <div class="remove-item" onclick="removeFromCart(${item.id})">
-                                <i class="fas fa-trash"></i> إزالة
+                                <i class="fas fa-trash"></i> ${translations[currentLang].remove}
                             </div>
                         </div>
                     `;
@@ -825,10 +891,10 @@
         // إتمام الشراء
         function checkout() {
             if (cart.length === 0) {
-                showNotification('السلة فارغة');
+                showNotification(translations[currentLang].notification_empty);
                 return;
             }
-            alert('شكراً لتسوقكم! تم إتمام عملية الشراء بنجاح');
+            alert(translations[currentLang].purchase_success);
             cart = [];
             updateCart();
             toggleCart();
@@ -838,11 +904,13 @@
         function filterByCategory(category) {
             const filtered = products.filter(p => p.category === category);
             displayProducts(filtered);
-            showNotification(`عرض منتجات: ${category}`);
+            const msg = translations[currentLang].show_products.replace('{category}', category);
+            showNotification(msg);
         }
 
         // تهيئة الصفحة
         document.addEventListener('DOMContentLoaded', () => {
+            setLanguage(currentLang);
             displayProducts();
             updateCart();
         });
@@ -850,11 +918,7 @@
 
     <!-- تذييل الصفحة -->
     <footer class="footer">
-        <p>
-            <i class="fas fa-copyright"></i> 2025 شركة مواد البناء للتجارة والاستيراد. جميع الحقوق محفوظة.
-            <br>
-            <i class="fas fa-truck"></i> شحن لجميع الدول العربية | <i class="fas fa-shield-alt"></i> ضمان الجودة | <i class="fas fa-headset"></i> دعم فني 24/7
-        </p>
+        <p><span data-i18n="footer">2025 شركة مواد البناء للتجارة والاستيراد. جميع الحقوق محفوظة.<br><i class="fas fa-truck"></i> شحن لجميع الدول العربية | <i class="fas fa-shield-alt"></i> ضمان الجودة | <i class="fas fa-headset"></i> دعم فني 24/7</span></p>
     </footer>
 </body>
 </html>
