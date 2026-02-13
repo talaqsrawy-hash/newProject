@@ -1,12 +1,33 @@
 // products: add/edit/list
 let editingProductId = null;
 
-function addProduct(event) {
+function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+async function addProduct(event) {
     event.preventDefault();
     const name = document.getElementById('productName').value;
     const desc = document.getElementById('productDesc').value;
     const price = parseFloat(document.getElementById('productPrice').value);
-    const image = document.getElementById('productImage').value || 'https://via.placeholder.com/200?text=' + encodeURIComponent(name);
+    const urlValue = document.getElementById('productImage').value;
+    const fileInput = document.getElementById('productImageFile');
+    let image = urlValue || 'https://via.placeholder.com/200?text=' + encodeURIComponent(name);
+
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        try {
+            const dataUrl = await readFileAsDataURL(fileInput.files[0]);
+            image = dataUrl;
+        } catch (e) {
+            console.error('File read error', e);
+        }
+    }
+
     const category = document.getElementById('productCategory').value;
 
     const product = {
@@ -29,6 +50,7 @@ function addProduct(event) {
     document.getElementById('productDesc').value = '';
     document.getElementById('productPrice').value = '';
     document.getElementById('productImage').value = '';
+    if (fileInput) fileInput.value = '';
 
     showNotification(t('product_added', { name: name }));
     if (typeof loadSellerProducts === 'function') loadSellerProducts();
@@ -48,7 +70,7 @@ function openEditModal(productId) {
     document.getElementById('editModal').classList.add('active');
 }
 
-function saveEditProduct(event) {
+async function saveEditProduct(event) {
     event.preventDefault();
     const product = store.products.find(p => p.id === editingProductId);
     if (!product) return;
@@ -56,12 +78,27 @@ function saveEditProduct(event) {
     product.name = document.getElementById('editProductName').value;
     product.desc = document.getElementById('editProductDesc').value;
     product.price = parseFloat(document.getElementById('editProductPrice').value);
-    product.image = document.getElementById('editProductImage').value;
+    const urlValue = document.getElementById('editProductImage').value;
+    const fileInput = document.getElementById('editProductImageFile');
+
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        try {
+            const dataUrl = await readFileAsDataURL(fileInput.files[0]);
+            product.image = dataUrl;
+        } catch (e) {
+            console.error('File read error', e);
+        }
+    } else {
+        product.image = urlValue;
+    }
+
     product.category = document.getElementById('editProductCategory').value;
 
     store.save();
     closeModal('editModal');
     editingProductId = null;
+    // clear file input
+    if (fileInput) fileInput.value = '';
     showNotification(t('product_updated', { name: product.name }));
     if (typeof loadSellerProducts === 'function') loadSellerProducts();
     if (store.currentUser && store.currentUser.role === 'buyer' && typeof loadAllProducts === 'function') {
